@@ -8,6 +8,4 @@ apt-get -y install nginx
 
 # 3. 웹 콘텐츠 만들기
 filename=/var/www/html/index.html
-
-# 4. 
-echo "Running JARVIS ENGIN from host $(hostname)" > ${filename}
+echo "Running JARVIS ENGIN from host $(hostname)!" > ${filename}
