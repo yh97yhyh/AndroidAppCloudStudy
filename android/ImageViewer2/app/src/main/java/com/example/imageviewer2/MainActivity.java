@@ -26,38 +26,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textNum = findViewById(R.id.textNum);
-        textName = findViewById(R.id.textName);
-        imageView = findViewById(R.id.imageView);
+        initUI(); // UI 참조값 초기화
+        listenerBtn(); // Button 리스너
+        listenerSeekBar(); // SeekBar 리스너
+
         display();
 
-        NextBtnOnClickListener nextBtnOnClickListener = new NextBtnOnClickListener();
-        button = findViewById(R.id.button);
-        button2 = findViewById(R.id.button2);
+    }
 
-        button.setOnClickListener(nextBtnOnClickListener);
-        button2.setOnClickListener(nextBtnOnClickListener);
-        button.setEnabled(false);
-
-        seekBar = findViewById(R.id.seekBar);
+    private void listenerSeekBar() {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                button.setEnabled(true);
-                button2.setEnabled(true);
-
                 index = progress;
-                if (index == 0) {
-                    button.setEnabled(false);
-                }
-                if (index == 6) {
-                    button2.setEnabled(false);
-                }
-
-                display();
-
-
+                setIndex(index);
             }
 
             @Override
@@ -70,38 +53,58 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    private void listenerBtn() {
+        NextBtnOnClickListener nextBtnOnClickListener = new NextBtnOnClickListener();
+        button.setOnClickListener(nextBtnOnClickListener);
+        button2.setOnClickListener(nextBtnOnClickListener);
+        button.setEnabled(false);
+    }
+
+    private void initUI() {
+        textNum = findViewById(R.id.textNum);
+        textName = findViewById(R.id.textName);
+        imageView = findViewById(R.id.imageView);
+        button = findViewById(R.id.button);
+        button2 = findViewById(R.id.button2);
+        seekBar = findViewById(R.id.seekBar);
     }
 
     private void display() {
         textNum.setText(String.format("%d / %d", index+1, names.length));
         textName.setText(names[index]);
         imageView.setImageResource(images[index]);
-//        seekBar.setProgress(index);
+        seekBar.setProgress(index);
     }
 
     class NextBtnOnClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
-            button.setEnabled(true);
-            button2.setEnabled(true);
 
             if (v.getId() == R.id.button) {
                 index --;
-                if (index <= 0) {
-                    button.setEnabled(false);
-                }
             }
             else if (v.getId() == R.id.button2) {
                 index ++;
-                if (index >= images.length-1) {
-                    button2.setEnabled(false);
-
-                }
             }
-            display();
+            setIndex(index);
         }
 
     }
+
+    void setIndex(int i) {
+        button.setEnabled(true);
+        button2.setEnabled(true);
+
+        if (i <= 0) {
+            button.setEnabled(false);
+        }
+        if (i >= images.length-1) {
+            button2.setEnabled(false);
+        }
+        display();
+    }
+
 }
