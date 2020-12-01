@@ -2,6 +2,7 @@ package com.example.listviewtest3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,29 +26,39 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // ArrayList<HashMap<String, String>>
+        // ArrayList<HashMap<String, Object>>
         members = new ArrayList<>();
         for(int i=0; i<nicks.length; i++) {
             HashMap<String, Object> map = new HashMap<>();
-            map.put("nick", nicks[i]);
-            map.put("name", names[i]);
-            map.put("image", images[i]);
+            map.put("nicks", nicks[i]);
+            map.put("names", names[i]);
+            map.put("images", images[i]);
             members.add(map);
         }
 
-        String[] keys = {"nick", "name", "images"};
+        String[] keys = {"nicks", "names", "images"};
         int[] values = {R.id.text_nick_item, R.id.text_name_item, R.id.image_item};
         listView = findViewById(R.id.listview);
         SimpleAdapter adapter = new SimpleAdapter(this, members, R.layout.layout_item, keys, values);
-        ItemClickListener itemClickListener = new ItemClickListener();
         listView.setAdapter(adapter);
+        ItemClickListener itemClickListener = new ItemClickListener();
         listView.setOnItemClickListener(itemClickListener);
     }
 
     class ItemClickListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//            Toast.makeText(MainActivity.this, members.get(position).get("nick"), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MainActivity.this, members.get(position).get("nicks").toString(), Toast.LENGTH_SHORT).show();
+            HashMap<String, Object> memberInfoMap = members.get(position);
+            String nick = memberInfoMap.get("nicks").toString();
+            String name = memberInfoMap.get("names").toString();
+            int image = (Integer) memberInfoMap.get("images");
+
+            Intent detailIntent = new Intent(MainActivity.this, DetailActivity.class);
+            detailIntent.putExtra("nicks", nick);
+            detailIntent.putExtra("names", name);
+            detailIntent.putExtra("images", image);
+            startActivity(detailIntent);
         }
     }
 }
