@@ -42,7 +42,7 @@ public class SubActivity extends AppCompatActivity {
                 Intent intent1 = new Intent();
                 String resultText = editText.getText().toString();
                 intent1.putExtra("str", resultText);
-                setResult(Activity.RESULT_OK, intent1); // 흠
+                setResult(Activity.RESULT_OK, intent1);
                 editText.setText("");
                 finish();
             }
