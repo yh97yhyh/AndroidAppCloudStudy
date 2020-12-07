@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class BTSAdapter extends RecyclerView.Adapter<BTSAdapter.ViewHolder> {
+
     Context context;
     ArrayList<BTS> members;
     int layout;
@@ -25,23 +27,24 @@ public class BTSAdapter extends RecyclerView.Adapter<BTSAdapter.ViewHolder> {
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { // 재활용 할 게 없으면 호출
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { // 재활용 할 게 없을 때
         LayoutInflater inflater = LayoutInflater.from(context);
         View itemView = inflater.inflate(layout, parent, false);
         ViewHolder holder = new ViewHolder(itemView);
-        return holder; // 리사이클러뷰에게 홀더 반환
+        return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) { // 항상 실행, 몇 번째 데이터를 요구하는지
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BTS member = members.get(position);
         holder.imageView.setImageResource(member.image);
         holder.textNick.setText(member.nick);
         holder.textName.setText(member.name);
+
     }
 
     @Override
-    public int getItemCount() { // 데이터의 갯수 반환
+    public int getItemCount() { // 데이터의 갯수
         return members.size();
     }
 
@@ -55,6 +58,15 @@ public class BTSAdapter extends RecyclerView.Adapter<BTSAdapter.ViewHolder> {
             imageView = itemView.findViewById(R.id.image_item);
             textNick = itemView.findViewById(R.id.textNick_item);
             textName = itemView.findViewById(R.id.textName_item);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    BTS member = members.get(pos);
+                    Toast.makeText(context, member.name, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 }

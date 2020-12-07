@@ -22,11 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        RecyclerView recycler;
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recycler = findViewById(R.id.recycler);
 
         members = new ArrayList<>();
         for(int i=0; i<nicks.length; i++) {
@@ -34,13 +31,18 @@ public class MainActivity extends AppCompatActivity {
             members.add(member);
         }
 
-        BTSAdapter1 adapter = new BTSAdapter1(this, members, R.layout.layout_item_hor);
+        RecyclerView recycler;
+        recycler = findViewById(R.id.recycler);
+
+        BTSAdapter adapter = new BTSAdapter(this, members, R.layout.layout_item);
         recycler.setAdapter(adapter);
 
-//        LinearLayoutManager manager = new LinearLayoutManager(this);
-//        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        GridLayoutManager  manager = new GridLayoutManager(this, 2);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recycler.setLayoutManager(manager);
+
+//        GridLayoutManager manager1 = new GridLayoutManager(this, 2);
+//        recycler.setLayoutManager((manager1));
 
         DividerItemDecoration decoration = new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL);
         DividerItemDecoration decoration1 = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
