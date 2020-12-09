@@ -6,13 +6,15 @@ import androidx.core.app.NotificationCompat;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    NotificationManager manager
+    NotificationManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +54,18 @@ public class MainActivity extends AppCompatActivity {
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendNotification("ch04", "햄버거", R.mipmap.ic_launcher_round,
-                        "햄버거", "알림 내용입니다.", 30);
+                NotificationCompat.Builder builder = getNotificationBuilder("ch03", "햄버거");
+                builder.setSmallIcon(R.mipmap.ic_launcher_round);
+
+                NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle(builder);
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.the_ultimate_hamburger);
+                style.bigPicture(bitmap);
+                style.setBigContentTitle("햄버거");
+                style.setSummaryText("Summary Text");
+
+                Notification noti = builder.build();
+                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                manager.notify(40, noti);
             }
         });
 
