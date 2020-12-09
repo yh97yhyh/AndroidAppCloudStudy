@@ -1,6 +1,7 @@
 package com.example.bookfinder;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
 
 import org.json.JSONArray;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     SearchView searchView;
     RecyclerView recyclerView;
     BookAdapter adapter;
+    int page = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,28 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
+
+        DividerItemDecoration decoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(decoration);
+
+        recyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                int totalItemCount = manager.getItemCount();
+                int lastVisible = manager.findLastCompletelyVisibleItemPosition();
+                if(lastVisible >= totalItemCount-1) {
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            page++;
+                            String json = search(searchView.getQuery().toString());
+                            parsing(json);
+                        }
+                    });
+                    thread.start();
+                }
+            }
+        });
     }
 
     @Override
@@ -55,9 +80,10 @@ public class MainActivity extends AppCompatActivity {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        adapter.clear();
                         String json = search(query);
                         parsing(json);
-                        System.out.println(json);
+//                        System.out.println(json);
                     }
                 });
                 thread.start();
@@ -75,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
     public String search(String query) {
         // 어디에 접속할 것인가, 카카오 서버에 요청
-        String strURL = String.format(END_POINT, query, 1);
+        String strURL = String.format(END_POINT, query, page);
         String str;
         String result = null;
         try {

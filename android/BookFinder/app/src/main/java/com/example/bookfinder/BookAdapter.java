@@ -1,6 +1,7 @@
 package com.example.bookfinder;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -27,6 +30,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         books.add(book);
     }
 
+    public void clear() {
+        books.clear();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,6 +47,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Book book = books.get(position);
 //        holder.imageView.setImageResource(Integer.parseInt(book.thumbnail));
+        Glide.with(context).load(book.thumbnail).into(holder.imageView);
         holder.textTitle.setText(book.title);
         holder.textAuthor.setText(book.authors);
         holder.textPublisher.setText(book.publisher);
@@ -70,6 +78,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             textPublisher = itemView.findViewById(R.id.ltext_publihser_item);
             textStatus = itemView.findViewById(R.id.text_status_item);
             textPrice = itemView.findViewById(R.id.text_price_item);
+            textPrice.setPaintFlags(textPrice.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
             textSalePrice = itemView.findViewById(R.id.text_sale_price_item);
         }
     }
