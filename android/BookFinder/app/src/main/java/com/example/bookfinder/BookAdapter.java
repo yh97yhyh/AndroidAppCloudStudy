@@ -1,6 +1,7 @@
 package com.example.bookfinder;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,6 +81,17 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             textPrice = itemView.findViewById(R.id.text_price_item);
             textPrice.setPaintFlags(textPrice.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
             textSalePrice = itemView.findViewById(R.id.text_sale_price_item);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    Book book = books.get(pos);
+                    Intent intent = new Intent(context, DetailActivity.class);
+                    intent.putExtra("url", book.url);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }
