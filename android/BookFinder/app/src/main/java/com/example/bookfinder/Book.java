@@ -3,7 +3,9 @@ package com.example.bookfinder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class Book {
+import java.io.Serializable;
+
+public class Book implements Serializable {
     String title;
     String contents;
     String url;

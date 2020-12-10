@@ -88,7 +88,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                     int pos = getAdapterPosition();
                     Book book = books.get(pos);
                     Intent intent = new Intent(context, DetailActivity.class);
-                    intent.putExtra("url", book.url);
+                    intent.putExtra("book", book); // 객체를 보냄 Serializable
+//                    intent.putExtra("url", book.url);
                     context.startActivity(intent);
                 }
             });

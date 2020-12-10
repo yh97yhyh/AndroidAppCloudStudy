@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     BookAdapter adapter;
     int page = 1;
+    boolean isEnd = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
                 int totalItemCount = manager.getItemCount();
                 int lastVisible = manager.findLastCompletelyVisibleItemPosition();
                 if(lastVisible >= totalItemCount-1) {
+                    if(isEnd) {
+                        //alertDialog : 마지막페이지 입니다.
+                        return;
+                    }
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -77,9 +82,11 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                isEnd = false;
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        page = 1;
                         adapter.clear();
                         String json = search(query);
                         parsing(json);
@@ -133,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             JSONObject root = new JSONObject(json);
             JSONObject meta = root.getJSONObject("meta");
+            isEnd = meta.getBoolean("is_end");
             JSONArray documents = root.getJSONArray("documents");
             for(int i=0; i<documents.length(); i++) {
                 JSONObject book = documents.getJSONObject(i);

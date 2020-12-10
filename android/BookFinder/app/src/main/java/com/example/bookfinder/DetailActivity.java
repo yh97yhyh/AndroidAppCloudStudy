@@ -17,12 +17,13 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         Intent intent = getIntent();
-        String  url = intent.getStringExtra("url");
+//        String  url = intent.getStringExtra("url");
+        Book book = (Book) intent.getSerializableExtra("book");
 
         webView = findViewById(R.id.webview);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl(url);
+        webView.loadUrl(book.url);
     }
 }
