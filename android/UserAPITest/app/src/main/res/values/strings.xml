@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">UserAPITest</string>
+    <string name="container_name">womanupapp</string>
+    <string name="connectionString">DefaultEndpointsProtocol=https;AccountName=womanupkyh1;AccountKey=sxy+ggZxQNI55IL+x7avHPGRG4ewk2XaFN7Usnhz3umKrMW57gBjsuOa3qOn4eX6DNoaq1pgFxToRcIEskYHKg==;EndpointSuffix=core.windows.net</string>
+</resources>
